@@ -66,7 +66,7 @@ timestamp=`date "+%Y-%m-%dT%H-%M-%S"`
 current_dump_filename=${base_dump_filename}_${timestamp}.${dump_extenstion}
 latest_dump_filename=${base_dump_filename}_latest.${dump_extenstion}
 
-pg_dump -Fc -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB} > ${current_dump_filename}
+pg_dump -Fc -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} ${POSTGRES_DB} > ${current_dump_filename}
 
 aws s3 cp ${current_dump_filename} s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${current_dump_filename}
 aws s3 cp s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${current_dump_filename} s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename}
