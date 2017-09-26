@@ -21,5 +21,4 @@ Backps will be stored in the bucket under the name of the host
 
 ## Roadmap
 
-- Restore
 - Encryption
