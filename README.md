@@ -14,7 +14,7 @@ docker run --rm leifg/postgres-s3-backup
   --aws-access-key-id access-key \
   --aws-secret-access-key access-secret \
   --aws-s3-bucket db-backups
-````
+```
 
 Backps will be stored in the bucket under the name of the host
 

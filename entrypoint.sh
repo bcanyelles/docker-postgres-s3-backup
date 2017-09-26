@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 while [[ $# -gt 1 ]]
 do
 key="$1"
@@ -40,7 +42,7 @@ case $key in
     *)
     ;;
 esac
-shift # past argument or value
+shift
 done
 
 cat <<EOT >> ~/.pgpass
