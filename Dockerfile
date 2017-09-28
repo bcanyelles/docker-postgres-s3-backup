@@ -1,9 +1,9 @@
-FROM alpine:3.6
+FROM postgres:10-rc1-alpine
 MAINTAINER Leif Gensert <leif@leif.io>
 
 RUN \
 	mkdir -p /aws \
-	&& apk -Uuv --no-cache add groff less python py-pip postgresql \
+	&& apk -Uuv --no-cache add groff less python py-pip \
 	&& pip install awscli \
 	&& apk --purge -v del py-pip \
 	&& rm /var/cache/apk/*
