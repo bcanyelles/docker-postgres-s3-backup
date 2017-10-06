@@ -1,4 +1,4 @@
-FROM postgres:10-rc1-alpine
+FROM postgres:10-alpine
 MAINTAINER Leif Gensert <leif@leif.io>
 
 RUN \
