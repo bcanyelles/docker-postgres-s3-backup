@@ -69,7 +69,7 @@ current_dump_filename=${base_dump_filename}_${timestamp}.${dump_extenstion}
 latest_dump_filename=${base_dump_filename}_latest.${dump_extenstion}
 
 if [ ${command} == "backup" ]; then
-    echo "backing up ${POSTGRES_DB} on ${POSTGRES_HOST}:${POSTGRES_PORT}"
+    echo "Backing up ${POSTGRES_DB} on ${POSTGRES_HOST}:${POSTGRES_PORT}"
 
     pg_dump -Fc -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} ${POSTGRES_DB} > ${current_dump_filename}
 
