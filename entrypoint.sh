@@ -83,7 +83,7 @@ elif [ ${command} == "restore" ]; then
     aws s3 cp s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename} /tmp
 
     echo "Download finished, starting restore"
-    psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE DATABASE ${POSTGRES_DB}"
+    psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d template1 -c "CREATE DATABASE ${POSTGRES_DB}"
     pg_restore -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d ${POSTGRES_DB} /tmp/${latest_dump_filename}
 
     echo "Restore finished, cleaning up"
