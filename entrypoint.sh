@@ -88,7 +88,7 @@ elif [ ${command} == "restore" ]; then
 
     echo "Restore finished, cleaning up"
 else
-    echo "Unknown command ${command}"
+    echo "[Postgres-S3-Backup] Unknown command ${command}"
 fi
 
 rm -f ~/.pgpass
