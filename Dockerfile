@@ -1,5 +1,5 @@
 FROM postgres:10-alpine
-MAINTAINER Leif Gensert <leif@leif.io>
+LABEL maintainer="Leif Gensert <leif@leif.io>"
 
 RUN \
 	mkdir -p /aws \
