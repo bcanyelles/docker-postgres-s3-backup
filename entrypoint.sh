@@ -1,14 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 command=$1
+CLEANUP="true"
 
 while [[ $# -gt 1 ]]
 do
 key="$1"
-
-CLEANUP="true"
 
 case $key in
     --skip-cleanup)
@@ -83,17 +82,21 @@ if [ ${command} == "backup" ]; then
 
     echo "Backup finished"
 elif [ ${command} == "restore" ]; then
-    echo "Downloading '${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename}''"
 
-    aws s3 cp s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename} /tmp
+    if [ -f "/tmp/${latest_dump_filename}" ]; then
+	    echo "Dump already exists, skipping download"
+    else
+        echo "Downloading '${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename}''"
+        aws s3 cp s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename} /tmp
+        echo "Download finished, starting restore"
+    fi
 
-    echo "Download finished, starting restore"
     psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d template1 -c "CREATE DATABASE ${POSTGRES_DB}"
     pg_restore -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d ${POSTGRES_DB} /tmp/${latest_dump_filename}
 
     echo "Restore finished"
 else
-    echo "[Postgres-S3-Backup] Unknown command ${command}"
+    echo "Unknown command ${command}, please either specify restore or backup"
 fi
 
 if ${CLEANUP} == "true"; then
