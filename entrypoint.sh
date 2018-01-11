@@ -8,7 +8,12 @@ while [[ $# -gt 1 ]]
 do
 key="$1"
 
+CLEANUP="true"
+
 case $key in
+    --skip-cleanup)
+    CLEANUP="false"
+    ;;
     --aws-access-key-id)
     AWS_ACCESS_KEY_ID="$2"
     shift
@@ -76,7 +81,7 @@ if [ ${command} == "backup" ]; then
     aws s3 cp ${current_dump_filename} s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${current_dump_filename}
     aws s3 cp s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${current_dump_filename} s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename}
 
-    echo "Backup finished, cleaning up"
+    echo "Backup finished"
 elif [ ${command} == "restore" ]; then
     echo "Downloading '${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename}''"
 
@@ -86,11 +91,14 @@ elif [ ${command} == "restore" ]; then
     psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d template1 -c "CREATE DATABASE ${POSTGRES_DB}"
     pg_restore -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d ${POSTGRES_DB} /tmp/${latest_dump_filename}
 
-    echo "Restore finished, cleaning up"
+    echo "Restore finished"
 else
     echo "[Postgres-S3-Backup] Unknown command ${command}"
 fi
 
-rm -f ~/.pgpass
-rm -f ~/.aws/credentials
-rm -rf /tmp/*
+if ${CLEANUP} == "true"; then
+    echo "Cleaning up"
+    rm -f ~/.pgpass
+    rm -f ~/.aws/credentials
+    rm -rf /tmp/*
+end
