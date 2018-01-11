@@ -101,4 +101,4 @@ if ${CLEANUP} == "true"; then
     rm -f ~/.pgpass
     rm -f ~/.aws/credentials
     rm -rf /tmp/*
-end
+fi
