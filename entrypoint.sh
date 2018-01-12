@@ -4,6 +4,7 @@ set -e
 
 command=$1
 CLEANUP="true"
+OVERWRITE="false"
 
 while [[ $# -gt 1 ]]
 do
@@ -12,6 +13,9 @@ key="$1"
 case $key in
     --skip-cleanup)
     CLEANUP="false"
+    ;;
+    --overwrite)
+    OVERWRITE="true"
     ;;
     --aws-access-key-id)
     AWS_ACCESS_KEY_ID="$2"
@@ -89,6 +93,10 @@ elif [ ${command} == "restore" ]; then
         echo "Downloading '${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename}''"
         aws s3 cp s3://${AWS_S3_BUCKET}/${POSTGRES_HOST}/${latest_dump_filename} /tmp
         echo "Download finished, starting restore"
+    fi
+
+    if ${OVERWRITE} == "true"; then
+        psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d template1 -c "DROP DATABASE IF EXISTS ${POSTGRES_DB}"
     fi
 
     psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d template1 -c "CREATE DATABASE ${POSTGRES_DB}"
