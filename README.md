@@ -22,6 +22,8 @@ Backps will be stored in the bucket under the name of the host
 
 ### Restore
 
+Restore command will always restore the dump with the `_latest` suffix.
+
 ```shell
 docker run --rm leifg/postgres-s3-backup restore \
   --postgres-host <db_host> \
