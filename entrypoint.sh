@@ -5,6 +5,7 @@ set -e
 command=$1
 CLEANUP="true"
 OVERWRITE="false"
+DEBUG="false"
 
 while [[ $# -gt 1 ]]
 do
@@ -16,6 +17,9 @@ case $key in
     ;;
     --overwrite)
     OVERWRITE="true"
+    ;;
+    --debug)
+    DEBUG="true"
     ;;
     --aws-access-key-id)
     AWS_ACCESS_KEY_ID="$2"
@@ -54,6 +58,18 @@ case $key in
 esac
 shift
 done
+
+if [ ${DEBUG} == "true" ]; then
+    echo "===== Postgres credentials"
+    echo "user:     ${POSTGRES_USER}"
+    echo "password: ${POSTGRES_PASSWORD}"
+    echo "====="
+
+    echo "===== AWS credentials"
+    echo "acces-key:     ${AWS_ACCESS_KEY_ID}"
+    echo "access-secret: ${AWS_SECRET_ACCESS_KEY}"
+    echo "====="
+fi
 
 cat <<EOT >> ~/.pgpass
 # hostname:port:database:username:password
@@ -95,7 +111,7 @@ elif [ ${command} == "restore" ]; then
         echo "Download finished, starting restore"
     fi
 
-    if ${OVERWRITE} == "true"; then
+    if [ ${OVERWRITE} == "true" ]; then
         psql -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -d template1 -c "DROP DATABASE IF EXISTS ${POSTGRES_DB}"
     fi
 
@@ -107,7 +123,7 @@ else
     echo "Unknown command ${command}, please either specify restore or backup"
 fi
 
-if ${CLEANUP} == "true"; then
+if [ ${CLEANUP} == "true" ]; then
     echo "Cleaning up"
     rm -f ~/.pgpass
     rm -f ~/.aws/credentials
