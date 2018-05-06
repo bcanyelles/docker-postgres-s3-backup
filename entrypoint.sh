@@ -66,7 +66,7 @@ if [ ${DEBUG} == "true" ]; then
     echo "====="
 
     echo "===== AWS credentials"
-    echo "acces-key:     ${AWS_ACCESS_KEY_ID}"
+    echo "access-key:    ${AWS_ACCESS_KEY_ID}"
     echo "access-secret: ${AWS_SECRET_ACCESS_KEY}"
     echo "====="
 fi
