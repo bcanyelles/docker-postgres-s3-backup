@@ -61,6 +61,8 @@ done
 
 if [ ${DEBUG} == "true" ]; then
     echo "===== Postgres credentials"
+    echo "host:     ${POSTGRES_HOST}"
+    echo "post:     ${POSTGRES_PORT}"
     echo "user:     ${POSTGRES_USER}"
     echo "password: ${POSTGRES_PASSWORD}"
     echo "====="
