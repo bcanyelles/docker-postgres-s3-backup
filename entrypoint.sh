@@ -70,6 +70,7 @@ if [ ${DEBUG} == "true" ]; then
     echo "===== AWS credentials"
     echo "access-key:    ${AWS_ACCESS_KEY_ID}"
     echo "access-secret: ${AWS_SECRET_ACCESS_KEY}"
+    echo "s3-bucket:"    ${AWS_S3_BUCKET}
     echo "====="
 fi
 
