@@ -1,12 +1,9 @@
-FROM postgres:10-alpine
-LABEL maintainer="Leif Gensert <leif@leif.io>"
+FROM postgres:11
 
-RUN \
-	mkdir -p /aws \
-	&& apk -Uuv --no-cache add groff less python py-pip \
-	&& pip install awscli \
-	&& apk --purge -v del py-pip \
-	&& rm /var/cache/apk/*
+RUN apt-get update && \
+	apt-get install python-dev python-pip -y && \
+	apt-get clean && \
+	pip install --use-wheel awscli
 
 ADD entrypoint.sh /usr/local/bin
 
